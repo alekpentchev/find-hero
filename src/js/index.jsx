@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom'
 
 import SearchBar from './search-bar.component'
 import SearchResults from './search-results.component'
-
+import CountryItem from './countryItem.component'
 
 class App extends React.Component {
     constructor(props) {
@@ -14,15 +14,16 @@ class App extends React.Component {
            searchPhrase: '',
            countriesEndpoint: 'https://raw.githubusercontent.com/mledoze/countries/master/countries.json',
            countriesAll: [],
-           searchedCountries: []
+           searchedCountries: [],
+           clickedCountry: {},
         }
         this.getSearchVal = this.getSearchVal.bind(this)
         this.retrieveCountriesList = this.retrieveCountriesList.bind(this)
         this.filterCountries = this.filterCountries.bind(this)
+        this.getClickedCountry = this.getClickedCountry.bind(this)
 
         this.retrieveCountriesList(this.state.countriesEndpoint)
     }
-    
     
     getSearchVal(newPhrase) {
         this.setState({
@@ -30,10 +31,12 @@ class App extends React.Component {
             searchedCountries: this.filterCountries(this.state.countriesAll, newPhrase.toLowerCase())
         })
         if(newPhrase.length==0) {
-            this.setState({
-                searchedCountries: []
-            })
+            this.setState({ searchedCountries: [] })
         }
+    }
+
+    getClickedCountry(clickedCountry) {
+        this.setState({ clickedCountry: clickedCountry  })
     }
     
 
@@ -45,7 +48,7 @@ class App extends React.Component {
     filterCountries(countriesArr, phrase) {
         let newCountries
             newCountries = countriesArr.filter( country => {
-                return country.name.common.toLowerCase().includes(phrase) 
+                return country.name.common.toLowerCase().includes(phrase) || country.capital.toLowerCase().includes(phrase)
             })
         return newCountries
     }
@@ -62,8 +65,11 @@ class App extends React.Component {
                         </div>
                         <hr/>
                         <div className="col-md-12">
-                            <SearchResults countries={this.state.searchedCountries} />
+                            <SearchResults countries={this.state.searchedCountries} sendClickedCountry={this.getClickedCountry} />
                         </div>
+                    </div>
+                    <div className="col-md-6 searched-item">
+                        <CountryItem selectedCountry={this.state.clickedCountry} />
                     </div>
                 </div>
             </div>
