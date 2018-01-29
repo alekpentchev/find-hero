@@ -48,7 +48,7 @@ class App extends React.Component {
     filterCountries(countriesArr, phrase) {
         let newCountries
             newCountries = countriesArr.filter( country => {
-                return country.name.common.toLowerCase().includes(phrase) || country.capital.toLowerCase().includes(phrase)
+                return country.name.common.toLowerCase().includes(phrase) || country.capital[0].toLowerCase().includes(phrase)
             })
         return newCountries
     }

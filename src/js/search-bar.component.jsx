@@ -16,7 +16,7 @@ class SearchBar extends React.Component {
     render() {
         return (
             <div>
-                <h5>Type what you're looking for - capital or country</h5>
+                <h5>Type what you're looking for...</h5>
                 <input onChange={ (e) => this.getInputVal(e)} type="text" />
             </div>
         )
